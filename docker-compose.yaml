@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: igniter
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - pre-requisites
+      - pre-requisites-admin
+      - igniter
+      - igniter-temporal-admin
+
+  temporal:
+    image: temporalio/auto-setup
+    container_name: temporal
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PWD=postgres
+      - POSTGRES_SEEDS=postgres
+    ports:
+      - "7233:7233"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - pre-requisites
+      - pre-requisites-admin
+      - igniter
+      - igniter-temporal-admin
+
+  temporal-admin-tools:
+    container_name: temporal-admin-tools
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+    image: temporalio/admin-tools
+    stdin_open: true
+    profiles:
+      - pre-requisites-admin
+      - igniter-temporal-admin
+
+  temporal-ui:
+    container_name: temporal-ui
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    image: temporalio/ui
+    ports:
+      - 8080:8080
+    profiles:
+      - pre-requisites-admin
+      - igniter-temporal-admin
+
+  igniter-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: client-web
+      args:
+        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+    container_name: igniter-web
+    environment:
+      COIN_MARKET_CAP_API_KEY: d8221f1c-02c2-4016-849f-f3cd842d1e83
+      NEXTAUTH_SECRET: a-secret-text
+      NEXTAUTH_URL: http://localhost:3000
+      API_HOSTNAME: http://igniter-web-api:3001
+    ports:
+      - "3000:3000"
+    profiles:
+      - igniter
+      - igniter-temporal-admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  igniter-web-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: client-api
+      args:
+        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+    container_name: igniter-web-api
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/igniter?schema=public
+    ports:
+      - "3001:3001"
+    profiles:
+      - igniter
+      - igniter-temporal-admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  igniter-workflows:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: workflows
+      args:
+        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+    container_name: igniter-workflows
+    environment:
+      POKT_RPC_URL: https://rpc.testnet.pokt.network/lb/6d6f727365/
+      TEMPORAL_TASK_QUEUE: igniter-operations
+      TEMPORAL_URL: temporal:7233
+      TEMPORAL_NAMESPACE: igniter
+    profiles:
+      - igniter
+      - igniter-temporal-admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

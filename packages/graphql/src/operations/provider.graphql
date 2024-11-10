@@ -1,0 +1,38 @@
+fragment ProviderFragment on Provider {
+  rowId
+  name
+  logo
+  website
+  revShare
+  createdAt
+  updatedAt
+}
+
+query GetProvider($id: UUID!) {
+  providerByRowId(rowId: $id) {
+    ...ProviderFragment
+  }
+}
+
+query ListProviders($first: Int, $after: Cursor, $last: Int, $before: Cursor) {
+  allProviders(first: $first, after: $after, last: $last, before: $before) {
+    nodes {
+      ...ProviderFragment
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+mutation CreateProvider($input: CreateProviderInput!) {
+  createProvider(input: $input) {
+    provider {
+      ...ProviderFragment
+    }
+  }
+}

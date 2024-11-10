@@ -1,0 +1,44 @@
+{
+  "name": "@igniter/client-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "clean": "pnpm dlx rimraf node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@8.15.6",
+  "dependencies": {
+    "@dataplan/json": "0.0.1-beta.23",
+    "@dataplan/pg": "0.0.1-beta.25",
+    "@fastify/cors": "9.0.1",
+    "@prisma/client": "5.19.0",
+    "dotenv": "16.4.5",
+    "fastify": "4.28.1",
+    "fastify-plugin": "4.5.1",
+    "graphile-build": "5.0.0-beta.24",
+    "graphile-build-pg": "5.0.0-beta.28",
+    "lodash": "4.17.21",
+    "pino": "9.3.2",
+    "postgraphile": "5.0.0-beta.29",
+    "prisma": "5.19.0",
+    "tsx": "4.17.0"
+  },
+  "devDependencies": {
+    "@babel/traverse": "7.23.2",
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/typescript-operations": "4.2.3",
+    "@graphql-codegen/typescript-react-apollo": "4.3.0",
+    "@types/lodash": "4.17.7",
+    "@types/node": "22.1.0",
+    "esbuild": "0.23.0",
+    "esbuild-register": "3.6.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-graphile-export": "0.0.2-beta.4",
+    "graphql": "16.9.0",
+    "ts-node": "10.9.2"
+  }
+}

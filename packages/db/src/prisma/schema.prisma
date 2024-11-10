@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["linux-musl", "native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum TransactionStatus {
+    PENDING
+    SUCCESS
+    FAILED
+}
+
+enum TransactionType {
+    SEND
+    STAKE
+    UPSTAKE
+    UNSTAKE
+}
+
+enum NodeStatus {
+    STAKED
+    UNSTAKED
+    UNSTAKING
+}
+
+model User {
+    id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    email        String?       @unique
+    name         String?
+    isAdmin      Boolean       @default(false)
+    address      String        @unique
+    wallets      Wallet[]
+    nodes        PoktNode[]
+    stakeConfigs StakeConfig[]
+    createdAt    DateTime?     @default(now())
+    updatedAt    DateTime?     @updatedAt
+}
+
+model Provider {
+    id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name        String
+    endpoint    String
+    logo        String
+    website     String
+    revShare    Float
+    createdAt   DateTime?     @default(now())
+    updatedAt   DateTime?     @updatedAt
+    Transaction Transaction[]
+}
+
+model Transaction {
+    id         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    type       TransactionType
+    from       String
+    to         String?
+    verified   Boolean           @default(false)
+    hash       String
+    status     TransactionStatus @default(PENDING)
+    amount     Float
+    providerId String?           @db.Uuid
+    createdAt  DateTime?         @default(now())
+    updatedAt  DateTime?         @updatedAt
+    Provider   Provider?         @relation(fields: [providerId], references: [id])
+
+    @@index([from])
+    @@index([createdAt])
+}
+
+model PoktNode {
+    id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    address     String     @unique
+    user        User       @relation(fields: [userId], references: [id])
+    userId      String     @db.Uuid
+    status      NodeStatus
+    stakeAmount Float      @default(0)
+    balance     Float      @default(0)
+    chains      String[]   @default([])
+    createdAt   DateTime?  @default(now())
+    updatedAt   DateTime?  @updatedAt
+
+    @@index([userId])
+}
+
+model Wallet {
+    id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    address   String    @unique
+    user      User      @relation(fields: [userId], references: [id])
+    userId    String    @db.Uuid
+    createdAt DateTime? @default(now())
+    updatedAt DateTime? @updatedAt
+
+    @@index([userId])
+}
+
+model StakeConfig {
+    id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    amount        Int
+    outputAddress String
+    user          User      @relation(fields: [userId], references: [id])
+    userId        String    @db.Uuid
+    createdAt     DateTime? @default(now())
+    updatedAt     DateTime? @updatedAt
+}

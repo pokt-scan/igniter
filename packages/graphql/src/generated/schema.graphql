@@ -1,0 +1,1622 @@
+"""The root query type which gives access points into the data universe."""
+type Query {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """Get a single `Wallet`."""
+  walletByRowId(rowId: UUID!): Wallet
+
+  """Get a single `StakeConfig`."""
+  stakeConfigByRowId(rowId: UUID!): StakeConfig
+
+  """Get a single `User`."""
+  userByRowId(rowId: UUID!): User
+
+  """Get a single `Provider`."""
+  providerByRowId(rowId: UUID!): Provider
+
+  """Get a single `Transaction`."""
+  transactionByRowId(rowId: UUID!): Transaction
+
+  """Get a single `PoktNode`."""
+  poktNodeByRowId(rowId: UUID!): PoktNode
+
+  """Reads and enables pagination through a set of `Wallet`."""
+  allWallets(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Wallet`."""
+    orderBy: [WalletOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WalletCondition
+  ): WalletConnection
+
+  """Reads and enables pagination through a set of `StakeConfig`."""
+  allStakeConfigs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `StakeConfig`."""
+    orderBy: [StakeConfigOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: StakeConfigCondition
+  ): StakeConfigConnection
+
+  """Reads and enables pagination through a set of `User`."""
+  allUsers(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `User`."""
+    orderBy: [UserOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): UserConnection
+
+  """Reads and enables pagination through a set of `Provider`."""
+  allProviders(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Provider`."""
+    orderBy: [ProviderOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProviderCondition
+  ): ProviderConnection
+
+  """Reads and enables pagination through a set of `Transaction`."""
+  allTransactions(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Transaction`."""
+    orderBy: [TransactionOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TransactionCondition
+  ): TransactionConnection
+
+  """Reads and enables pagination through a set of `PoktNode`."""
+  allPoktNodes(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `PoktNode`."""
+    orderBy: [PoktNodeOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PoktNodeCondition
+  ): PoktNodeConnection
+}
+
+type Wallet {
+  rowId: UUID!
+  address: String!
+  userId: UUID!
+  createdAt: Datetime
+  updatedAt: Datetime
+
+  """Reads a single `User` that is related to this `Wallet`."""
+  userByUserId: User
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) and, if it has a timezone, [RFC
+3339](https://datatracker.ietf.org/doc/html/rfc3339) standards. Input values
+that do not conform to both ISO 8601 and RFC 3339 may be coerced, which may lead
+to unexpected results.
+"""
+scalar Datetime
+
+type User {
+  rowId: UUID!
+  email: String
+  name: String
+  isAdmin: Boolean!
+  address: String!
+  createdAt: Datetime
+  updatedAt: Datetime
+
+  """Reads and enables pagination through a set of `PoktNode`."""
+  poktNodesByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `PoktNode`."""
+    orderBy: [PoktNodeOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PoktNodeCondition
+  ): PoktNodeConnection!
+
+  """Reads and enables pagination through a set of `Wallet`."""
+  walletsByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Wallet`."""
+    orderBy: [WalletOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: WalletCondition
+  ): WalletConnection!
+}
+
+"""A connection to a list of `PoktNode` values."""
+type PoktNodeConnection {
+  """A list of `PoktNode` objects."""
+  nodes: [PoktNode]!
+
+  """
+  A list of edges which contains the `PoktNode` and cursor to aid in pagination.
+  """
+  edges: [PoktNodeEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `PoktNode` you could get from the connection."""
+  totalCount: Int!
+}
+
+type PoktNode {
+  rowId: UUID!
+  address: String!
+  userId: UUID!
+  status: NodeStatus!
+  stakeAmount: Float!
+  balance: Float!
+  chains: [String]
+  createdAt: Datetime
+  updatedAt: Datetime
+
+  """Reads a single `User` that is related to this `PoktNode`."""
+  userByUserId: User
+}
+
+enum NodeStatus {
+  STAKED
+  UNSTAKED
+  UNSTAKING
+}
+
+"""A `PoktNode` edge in the connection."""
+type PoktNodeEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PoktNode` at the end of the edge."""
+  node: PoktNode
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `PoktNode`."""
+enum PoktNodeOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+  ADDRESS_ASC
+  ADDRESS_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+}
+
+"""
+A condition to be used against `PoktNode` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input PoktNodeCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `address` field."""
+  address: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: UUID
+}
+
+"""A connection to a list of `Wallet` values."""
+type WalletConnection {
+  """A list of `Wallet` objects."""
+  nodes: [Wallet]!
+
+  """
+  A list of edges which contains the `Wallet` and cursor to aid in pagination.
+  """
+  edges: [WalletEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Wallet` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Wallet` edge in the connection."""
+type WalletEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Wallet` at the end of the edge."""
+  node: Wallet
+}
+
+"""Methods to use when ordering `Wallet`."""
+enum WalletOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+  ADDRESS_ASC
+  ADDRESS_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+}
+
+"""
+A condition to be used against `Wallet` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input WalletCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `address` field."""
+  address: String
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: UUID
+}
+
+type StakeConfig {
+  rowId: UUID!
+  amount: Int!
+  outputAddress: String!
+  userId: UUID!
+  createdAt: Datetime
+  updatedAt: Datetime
+
+  """Reads a single `User` that is related to this `StakeConfig`."""
+  userByUserId: User
+}
+
+type Provider {
+  rowId: UUID!
+  name: String!
+  endpoint: String!
+  logo: String!
+  website: String!
+  revShare: Float!
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+type Transaction {
+  rowId: UUID!
+  type: TransactionType!
+  from: String!
+  to: String
+  verified: Boolean!
+  hash: String!
+  status: TransactionStatus!
+  amount: Float!
+  providerId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+
+  """Reads a single `Provider` that is related to this `Transaction`."""
+  providerByProviderId: Provider
+}
+
+enum TransactionType {
+  SEND
+  STAKE
+  UPSTAKE
+  UNSTAKE
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+"""A connection to a list of `StakeConfig` values."""
+type StakeConfigConnection {
+  """A list of `StakeConfig` objects."""
+  nodes: [StakeConfig]!
+
+  """
+  A list of edges which contains the `StakeConfig` and cursor to aid in pagination.
+  """
+  edges: [StakeConfigEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `StakeConfig` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `StakeConfig` edge in the connection."""
+type StakeConfigEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `StakeConfig` at the end of the edge."""
+  node: StakeConfig
+}
+
+"""Methods to use when ordering `StakeConfig`."""
+enum StakeConfigOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `StakeConfig` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input StakeConfigCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+}
+
+"""A connection to a list of `User` values."""
+type UserConnection {
+  """A list of `User` objects."""
+  nodes: [User]!
+
+  """
+  A list of edges which contains the `User` and cursor to aid in pagination.
+  """
+  edges: [UserEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection."""
+type UserEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User
+}
+
+"""Methods to use when ordering `User`."""
+enum UserOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  ADDRESS_ASC
+  ADDRESS_DESC
+}
+
+"""
+A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input UserCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
+
+  """Checks for equality with the object’s `address` field."""
+  address: String
+}
+
+"""A connection to a list of `Provider` values."""
+type ProviderConnection {
+  """A list of `Provider` objects."""
+  nodes: [Provider]!
+
+  """
+  A list of edges which contains the `Provider` and cursor to aid in pagination.
+  """
+  edges: [ProviderEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Provider` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Provider` edge in the connection."""
+type ProviderEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Provider` at the end of the edge."""
+  node: Provider
+}
+
+"""Methods to use when ordering `Provider`."""
+enum ProviderOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `Provider` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input ProviderCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+}
+
+"""A connection to a list of `Transaction` values."""
+type TransactionConnection {
+  """A list of `Transaction` objects."""
+  nodes: [Transaction]!
+
+  """
+  A list of edges which contains the `Transaction` and cursor to aid in pagination.
+  """
+  edges: [TransactionEdge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Transaction` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Transaction` edge in the connection."""
+type TransactionEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Transaction` at the end of the edge."""
+  node: Transaction
+}
+
+"""Methods to use when ordering `Transaction`."""
+enum TransactionOrderBy {
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  ID_ASC
+  ID_DESC
+  FROM_ASC
+  FROM_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+}
+
+"""
+A condition to be used against `Transaction` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TransactionCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: UUID
+
+  """Checks for equality with the object’s `from` field."""
+  from: String
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+}
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `Wallet`."""
+  createWallet(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateWalletInput!
+  ): CreateWalletPayload
+
+  """Creates a single `StakeConfig`."""
+  createStakeConfig(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateStakeConfigInput!
+  ): CreateStakeConfigPayload
+
+  """Creates a single `User`."""
+  createUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateUserInput!
+  ): CreateUserPayload
+
+  """Creates a single `Provider`."""
+  createProvider(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateProviderInput!
+  ): CreateProviderPayload
+
+  """Creates a single `Transaction`."""
+  createTransaction(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTransactionInput!
+  ): CreateTransactionPayload
+
+  """Creates a single `PoktNode`."""
+  createPoktNode(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreatePoktNodeInput!
+  ): CreatePoktNodePayload
+
+  """Updates a single `Wallet` using a unique key and a patch."""
+  updateWalletByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateWalletByRowIdInput!
+  ): UpdateWalletPayload
+
+  """Updates a single `StakeConfig` using a unique key and a patch."""
+  updateStakeConfigByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateStakeConfigByRowIdInput!
+  ): UpdateStakeConfigPayload
+
+  """Updates a single `User` using a unique key and a patch."""
+  updateUserByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserByRowIdInput!
+  ): UpdateUserPayload
+
+  """Updates a single `Provider` using a unique key and a patch."""
+  updateProviderByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateProviderByRowIdInput!
+  ): UpdateProviderPayload
+
+  """Updates a single `Transaction` using a unique key and a patch."""
+  updateTransactionByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTransactionByRowIdInput!
+  ): UpdateTransactionPayload
+
+  """Updates a single `PoktNode` using a unique key and a patch."""
+  updatePoktNodeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePoktNodeByRowIdInput!
+  ): UpdatePoktNodePayload
+
+  """Deletes a single `Wallet` using a unique key."""
+  deleteWalletByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteWalletByRowIdInput!
+  ): DeleteWalletPayload
+
+  """Deletes a single `StakeConfig` using a unique key."""
+  deleteStakeConfigByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteStakeConfigByRowIdInput!
+  ): DeleteStakeConfigPayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUserByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserByRowIdInput!
+  ): DeleteUserPayload
+
+  """Deletes a single `Provider` using a unique key."""
+  deleteProviderByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteProviderByRowIdInput!
+  ): DeleteProviderPayload
+
+  """Deletes a single `Transaction` using a unique key."""
+  deleteTransactionByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTransactionByRowIdInput!
+  ): DeleteTransactionPayload
+
+  """Deletes a single `PoktNode` using a unique key."""
+  deletePoktNodeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePoktNodeByRowIdInput!
+  ): DeletePoktNodePayload
+}
+
+"""The output of our create `Wallet` mutation."""
+type CreateWalletPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Wallet` that was created by this mutation."""
+  wallet: Wallet
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Wallet`. May be used by Relay 1."""
+  walletEdge(
+    """The method to use when ordering `Wallet`."""
+    orderBy: [WalletOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): WalletEdge
+}
+
+"""All input for the create `Wallet` mutation."""
+input CreateWalletInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Wallet` to be created by this mutation."""
+  wallet: WalletInput!
+}
+
+"""An input for mutations affecting `Wallet`"""
+input WalletInput {
+  rowId: UUID
+  address: String!
+  userId: UUID!
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `StakeConfig` mutation."""
+type CreateStakeConfigPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `StakeConfig` that was created by this mutation."""
+  stakeConfig: StakeConfig
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `StakeConfig`. May be used by Relay 1."""
+  stakeConfigEdge(
+    """The method to use when ordering `StakeConfig`."""
+    orderBy: [StakeConfigOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): StakeConfigEdge
+}
+
+"""All input for the create `StakeConfig` mutation."""
+input CreateStakeConfigInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `StakeConfig` to be created by this mutation."""
+  stakeConfig: StakeConfigInput!
+}
+
+"""An input for mutations affecting `StakeConfig`"""
+input StakeConfigInput {
+  rowId: UUID
+  amount: Int!
+  outputAddress: String!
+  userId: UUID!
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `User` mutation."""
+type CreateUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was created by this mutation."""
+  user: User
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UserOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): UserEdge
+}
+
+"""All input for the create `User` mutation."""
+input CreateUserInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `User` to be created by this mutation."""
+  user: UserInput!
+}
+
+"""An input for mutations affecting `User`"""
+input UserInput {
+  rowId: UUID
+  email: String
+  name: String
+  isAdmin: Boolean
+  address: String!
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Provider` mutation."""
+type CreateProviderPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Provider` that was created by this mutation."""
+  provider: Provider
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Provider`. May be used by Relay 1."""
+  providerEdge(
+    """The method to use when ordering `Provider`."""
+    orderBy: [ProviderOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): ProviderEdge
+}
+
+"""All input for the create `Provider` mutation."""
+input CreateProviderInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Provider` to be created by this mutation."""
+  provider: ProviderInput!
+}
+
+"""An input for mutations affecting `Provider`"""
+input ProviderInput {
+  rowId: UUID
+  name: String!
+  endpoint: String!
+  logo: String!
+  website: String!
+  revShare: Float!
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Transaction` mutation."""
+type CreateTransactionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Transaction` that was created by this mutation."""
+  transaction: Transaction
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Transaction`. May be used by Relay 1."""
+  transactionEdge(
+    """The method to use when ordering `Transaction`."""
+    orderBy: [TransactionOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): TransactionEdge
+}
+
+"""All input for the create `Transaction` mutation."""
+input CreateTransactionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Transaction` to be created by this mutation."""
+  transaction: TransactionInput!
+}
+
+"""An input for mutations affecting `Transaction`"""
+input TransactionInput {
+  rowId: UUID
+  type: TransactionType!
+  from: String!
+  to: String
+  verified: Boolean
+  hash: String!
+  status: TransactionStatus
+  amount: Float!
+  providerId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `PoktNode` mutation."""
+type CreatePoktNodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PoktNode` that was created by this mutation."""
+  poktNode: PoktNode
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `PoktNode`. May be used by Relay 1."""
+  poktNodeEdge(
+    """The method to use when ordering `PoktNode`."""
+    orderBy: [PoktNodeOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PoktNodeEdge
+}
+
+"""All input for the create `PoktNode` mutation."""
+input CreatePoktNodeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `PoktNode` to be created by this mutation."""
+  poktNode: PoktNodeInput!
+}
+
+"""An input for mutations affecting `PoktNode`"""
+input PoktNodeInput {
+  rowId: UUID
+  address: String!
+  userId: UUID!
+  status: NodeStatus!
+  stakeAmount: Float
+  balance: Float
+  chains: [String]
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `Wallet` mutation."""
+type UpdateWalletPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Wallet` that was updated by this mutation."""
+  wallet: Wallet
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Wallet`. May be used by Relay 1."""
+  walletEdge(
+    """The method to use when ordering `Wallet`."""
+    orderBy: [WalletOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): WalletEdge
+}
+
+"""All input for the `updateWalletByRowId` mutation."""
+input UpdateWalletByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `Wallet` being updated.
+  """
+  walletPatch: WalletPatch!
+}
+
+"""
+Represents an update to a `Wallet`. Fields that are set will be updated.
+"""
+input WalletPatch {
+  rowId: UUID
+  address: String
+  userId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `StakeConfig` mutation."""
+type UpdateStakeConfigPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `StakeConfig` that was updated by this mutation."""
+  stakeConfig: StakeConfig
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `StakeConfig`. May be used by Relay 1."""
+  stakeConfigEdge(
+    """The method to use when ordering `StakeConfig`."""
+    orderBy: [StakeConfigOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): StakeConfigEdge
+}
+
+"""All input for the `updateStakeConfigByRowId` mutation."""
+input UpdateStakeConfigByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `StakeConfig` being updated.
+  """
+  stakeConfigPatch: StakeConfigPatch!
+}
+
+"""
+Represents an update to a `StakeConfig`. Fields that are set will be updated.
+"""
+input StakeConfigPatch {
+  rowId: UUID
+  amount: Int
+  outputAddress: String
+  userId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `User` mutation."""
+type UpdateUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was updated by this mutation."""
+  user: User
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UserOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): UserEdge
+}
+
+"""All input for the `updateUserByRowId` mutation."""
+input UpdateUserByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `User` being updated.
+  """
+  userPatch: UserPatch!
+}
+
+"""Represents an update to a `User`. Fields that are set will be updated."""
+input UserPatch {
+  rowId: UUID
+  email: String
+  name: String
+  isAdmin: Boolean
+  address: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `Provider` mutation."""
+type UpdateProviderPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Provider` that was updated by this mutation."""
+  provider: Provider
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Provider`. May be used by Relay 1."""
+  providerEdge(
+    """The method to use when ordering `Provider`."""
+    orderBy: [ProviderOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): ProviderEdge
+}
+
+"""All input for the `updateProviderByRowId` mutation."""
+input UpdateProviderByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `Provider` being updated.
+  """
+  providerPatch: ProviderPatch!
+}
+
+"""
+Represents an update to a `Provider`. Fields that are set will be updated.
+"""
+input ProviderPatch {
+  rowId: UUID
+  name: String
+  endpoint: String
+  logo: String
+  website: String
+  revShare: Float
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `Transaction` mutation."""
+type UpdateTransactionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Transaction` that was updated by this mutation."""
+  transaction: Transaction
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Transaction`. May be used by Relay 1."""
+  transactionEdge(
+    """The method to use when ordering `Transaction`."""
+    orderBy: [TransactionOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): TransactionEdge
+}
+
+"""All input for the `updateTransactionByRowId` mutation."""
+input UpdateTransactionByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `Transaction` being updated.
+  """
+  transactionPatch: TransactionPatch!
+}
+
+"""
+Represents an update to a `Transaction`. Fields that are set will be updated.
+"""
+input TransactionPatch {
+  rowId: UUID
+  type: TransactionType
+  from: String
+  to: String
+  verified: Boolean
+  hash: String
+  status: TransactionStatus
+  amount: Float
+  providerId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our update `PoktNode` mutation."""
+type UpdatePoktNodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PoktNode` that was updated by this mutation."""
+  poktNode: PoktNode
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `PoktNode`. May be used by Relay 1."""
+  poktNodeEdge(
+    """The method to use when ordering `PoktNode`."""
+    orderBy: [PoktNodeOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PoktNodeEdge
+}
+
+"""All input for the `updatePoktNodeByRowId` mutation."""
+input UpdatePoktNodeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+
+  """
+  An object where the defined keys will be set on the `PoktNode` being updated.
+  """
+  poktNodePatch: PoktNodePatch!
+}
+
+"""
+Represents an update to a `PoktNode`. Fields that are set will be updated.
+"""
+input PoktNodePatch {
+  rowId: UUID
+  address: String
+  userId: UUID
+  status: NodeStatus
+  stakeAmount: Float
+  balance: Float
+  chains: [String]
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our delete `Wallet` mutation."""
+type DeleteWalletPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Wallet` that was deleted by this mutation."""
+  wallet: Wallet
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Wallet`. May be used by Relay 1."""
+  walletEdge(
+    """The method to use when ordering `Wallet`."""
+    orderBy: [WalletOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): WalletEdge
+}
+
+"""All input for the `deleteWalletByRowId` mutation."""
+input DeleteWalletByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `StakeConfig` mutation."""
+type DeleteStakeConfigPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `StakeConfig` that was deleted by this mutation."""
+  stakeConfig: StakeConfig
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `StakeConfig`. May be used by Relay 1."""
+  stakeConfigEdge(
+    """The method to use when ordering `StakeConfig`."""
+    orderBy: [StakeConfigOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): StakeConfigEdge
+}
+
+"""All input for the `deleteStakeConfigByRowId` mutation."""
+input DeleteStakeConfigByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `User` mutation."""
+type DeleteUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `User` that was deleted by this mutation."""
+  user: User
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UserOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): UserEdge
+}
+
+"""All input for the `deleteUserByRowId` mutation."""
+input DeleteUserByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Provider` mutation."""
+type DeleteProviderPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Provider` that was deleted by this mutation."""
+  provider: Provider
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Provider`. May be used by Relay 1."""
+  providerEdge(
+    """The method to use when ordering `Provider`."""
+    orderBy: [ProviderOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): ProviderEdge
+}
+
+"""All input for the `deleteProviderByRowId` mutation."""
+input DeleteProviderByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `Transaction` mutation."""
+type DeleteTransactionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Transaction` that was deleted by this mutation."""
+  transaction: Transaction
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Transaction`. May be used by Relay 1."""
+  transactionEdge(
+    """The method to use when ordering `Transaction`."""
+    orderBy: [TransactionOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): TransactionEdge
+}
+
+"""All input for the `deleteTransactionByRowId` mutation."""
+input DeleteTransactionByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}
+
+"""The output of our delete `PoktNode` mutation."""
+type DeletePoktNodePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `PoktNode` that was deleted by this mutation."""
+  poktNode: PoktNode
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `PoktNode`. May be used by Relay 1."""
+  poktNodeEdge(
+    """The method to use when ordering `PoktNode`."""
+    orderBy: [PoktNodeOrderBy!]! = [PRIMARY_KEY_ASC]
+  ): PoktNodeEdge
+}
+
+"""All input for the `deletePoktNodeByRowId` mutation."""
+input DeletePoktNodeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  rowId: UUID!
+}

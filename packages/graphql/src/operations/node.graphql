@@ -1,0 +1,48 @@
+fragment PoktNodeFragment on PoktNode {
+  rowId
+  address
+  userId
+  status
+  stakeAmount
+  balance
+  chains
+  createdAt
+  updatedAt
+}
+
+query GetPoktNode($id: UUID!) {
+  poktNodeByRowId(rowId: $id) {
+    ...PoktNodeFragment
+  }
+}
+
+query GetPoktNodeByUserId($userId: UUID!) {
+  allPoktNodes(condition: { userId: $userId }) {
+    nodes {
+      ...PoktNodeFragment
+    }
+  }
+}
+
+query ListPoktNodes($first: Int, $after: Cursor, $last: Int, $before: Cursor) {
+  allPoktNodes(first: $first, after: $after, last: $last, before: $before) {
+    nodes {
+      ...PoktNodeFragment
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+mutation CreatePoktNode($input: CreatePoktNodeInput!) {
+  createPoktNode(input: $input) {
+    poktNode {
+      ...PoktNodeFragment
+    }
+  }
+}

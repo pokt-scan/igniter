@@ -1,0 +1,56 @@
+fragment TransactionFragment on Transaction {
+  rowId
+  type
+  from
+  verified
+  hash
+  status
+  createdAt
+  updatedAt
+}
+
+query GetTransaction($id: UUID!) {
+  transactionByRowId(rowId: $id) {
+    ...TransactionFragment
+  }
+}
+
+query GetTransactionByUserId($userAddress: String!) {
+  allTransactions(
+    condition: { from: $userAddress }
+    first: 4
+    orderBy: CREATED_AT_DESC
+  ) {
+    nodes {
+      ...TransactionFragment
+    }
+  }
+}
+
+query ListTransactions(
+  $first: Int
+  $after: Cursor
+  $last: Int
+  $before: Cursor
+) {
+  allTransactions(first: $first, after: $after, last: $last, before: $before) {
+    nodes {
+      ...TransactionFragment
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+mutation CreateTransaction($input: CreateTransactionInput!) {
+  createTransaction(input: $input) {
+    transaction {
+      ...TransactionFragment
+    }
+  }
+}

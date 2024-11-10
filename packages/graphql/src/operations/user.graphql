@@ -1,0 +1,37 @@
+fragment UserFragment on User {
+  rowId
+  email
+  name
+  isAdmin
+  createdAt
+  updatedAt
+}
+
+query GetUser($id: UUID!) {
+  userByRowId(rowId: $id) {
+    ...UserFragment
+  }
+}
+
+query ListUsers($first: Int, $after: Cursor, $last: Int, $before: Cursor) {
+  allUsers(first: $first, after: $after, last: $last, before: $before) {
+    nodes {
+      ...UserFragment
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+
+mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    user {
+      ...UserFragment
+    }
+  }
+}

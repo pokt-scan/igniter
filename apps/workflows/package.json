@@ -1,0 +1,33 @@
+{
+  "name": "@igniter/workflows",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "pnpm dlx rimraf dist node_modules",
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pokt-foundation/pocketjs-provider": "2.2.1",
+    "@pokt-foundation/pocketjs-types": "2.2.1",
+    "@prisma/client": "5.19.0",
+    "@temporalio/activity": "1.10.0",
+    "@temporalio/client": "1.10.0",
+    "@temporalio/common": "1.10.0",
+    "@temporalio/worker": "1.10.0",
+    "@temporalio/workflow": "1.10.0",
+    "tsx": "4.17.0",
+    "dotenv": "16.4.5",
+    "prisma": "5.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.1.0",
+    "esbuild": "0.23.0",
+    "esbuild-register": "3.6.0",
+    "ts-node": "10.9.2"
+  }
+}

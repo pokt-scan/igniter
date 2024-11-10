@@ -1,0 +1,24 @@
+{
+  "name": "igniter-platform",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "start": "turbo start",
+    "clean": "pnpm dlx rimraf node_modules && turbo clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "set-up": "turbo prepare"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.2.3",
+    "typescript": "5.5.4"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18"
+  },
+  "resolutions": {
+    "@babel/traverse": "7.25.0"
+  }
+}

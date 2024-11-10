@@ -1,0 +1,37 @@
+{
+  "name": "@igniter/graphql",
+  "type": "module",
+  "main": "./dist/generated/client-types.js",
+  "types": "./dist/generated/client-types.d.ts",
+  "scripts": {
+    "build": "pnpm graphql:generate && pnpm graphql:codegen && tsc",
+    "clean": "pnpm dlx rimraf dist node_modules",
+    "graphql:codegen": "graphql-codegen --config ./src/codegen.ts",
+    "graphql:generate": "tsx ./src/graphile/exportSchema.ts"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.8",
+    "@dataplan/json": "beta",
+    "@dataplan/pg": "beta",
+    "dotenv": "16.4.5",
+    "graphile-build": "beta",
+    "graphile-build-pg": "beta",
+    "graphile-export": "beta",
+    "postgraphile": "beta"
+  },
+  "devDependencies": {
+    "@babel/traverse": "7.25.0",
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/typescript-operations": "4.2.3",
+    "@graphql-codegen/typescript-react-apollo": "4.3.0",
+    "@types/lodash": "4.17.7",
+    "@types/node": "22.1.0",
+    "esbuild": "0.23.0",
+    "esbuild-register": "3.6.0",
+    "eslint-plugin-graphile-export": "0.0.2-beta.4",
+    "eslint": "^8.57.1",
+    "graphql": "16.9.0",
+    "ts-node": "10.9.2",
+    "tsx": "4.17.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@igniter/db",
+  "type": "module",
+  "main": "./dist/prisma/index.js",
+  "types": "./dist/prisma/index.d.ts",
+  "scripts": {
+    "clean": "pnpm dlx rimraf dist node_modules",
+    "build": "pnpm prisma:generate && tsc",
+    "prisma:generate": "prisma generate --schema ./src/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema ./src/prisma/schema.prisma",
+    "prisma:pull": "prisma db pull --schema ./src/prisma/schema.prisma",
+    "prisma:push": "prisma db push --schema ./src/prisma/schema.prisma"
+  },
+  "devDependencies": {
+    "@types/node": "22.1.0",
+    "prisma": "5.19.0"
+  },
+  "dependencies": {
+    "@prisma/client": "5.19.0"
+  }
+}
