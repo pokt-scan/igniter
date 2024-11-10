@@ -1,5 +1,5 @@
 import { Client, Connection } from "@temporalio/client";
-import {TEMPORAL_NAMESPACE, TEMPORAL_TASK_QUEUE, TEMPORAL_URL} from './constants';
+import {TEMPORAL_NAMESPACE, TEMPORAL_TASK_QUEUE, TEMPORAL_URL, TEMPORAL_WORKFLOW_RETENTION} from './constants';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -21,6 +21,7 @@ export const getTemporalConfig = () => {
   return {
     taskQueue: TEMPORAL_TASK_QUEUE,
     namespace: TEMPORAL_NAMESPACE,
+    workflowExecutionRetentionPeriod: TEMPORAL_WORKFLOW_RETENTION,
   };
 };
 

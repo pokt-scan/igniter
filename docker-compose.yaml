@@ -124,6 +124,7 @@ services:
       TEMPORAL_TASK_QUEUE: igniter-operations
       TEMPORAL_URL: temporal:7233
       TEMPORAL_NAMESPACE: igniter
+      TEMPORAL_WORKFLOW_RETENTION: 86400
     profiles:
       - igniter
       - igniter-temporal-admin
