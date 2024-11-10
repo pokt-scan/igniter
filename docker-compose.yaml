@@ -32,8 +32,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PWD=postgres
       - POSTGRES_SEEDS=postgres
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+      - SKIP_SCHEMA_SETUP=true
+      - RINGPOP_SEEDS=temporal:7233 # Ensure it's set to the correct hostname and port
     ports:
       - "7233:7233"
+    healthcheck:
+      test: [ "CMD","tctl", "--address", "temporal:7233", "workflow", "list", "||", "exit 1" ]
+      interval: 1s
+      timeout: 5s
+      retries: 30
     depends_on:
       postgres:
         condition: service_healthy
@@ -130,6 +138,8 @@ services:
       - igniter-temporal-admin
     depends_on:
       postgres:
+        condition: service_healthy
+      temporal:
         condition: service_healthy
 
 volumes:

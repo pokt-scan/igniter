@@ -44,19 +44,33 @@ async function bootstrapScheduledWorkflows() {
   for (const type in ScheduledWorkflowType) {
     const workflowType = ScheduledWorkflowType[type];
     try {
-      await client.schedule.create({
-        action: {
-          type: "startWorkflow",
-          workflowType,
-          taskQueue: config.taskQueue,
-        },
-        scheduleId: `${workflowType}-scheduled`,
-        spec: {
-          intervals: [{ every: "2m" }],
-        },
+      await client.connection.workflowService.describeSchedule({
+        namespace: config.namespace,
+        scheduleId: `${workflowType}-scheduled`
       });
-    } catch (error) {
-      console.error(`Error scheduling ${workflowType}`, error);
+      console.log(`Scheduled workflow "${workflowType}" already exists. Skipping registration...`);
+    } catch (error: unknown) {
+      if (!(error as any).details.match(/exists/i)) {
+          console.error(`Error describing scheduled workflow "${workflowType}":`, error);
+          throw error;
+      }
+      try {
+        console.log(`Scheduled workflow "${workflowType}" does not exist. Registering...`);
+        await client.schedule.create({
+          action: {
+            type: "startWorkflow",
+            workflowType,
+            taskQueue: config.taskQueue,
+          },
+          scheduleId: `${workflowType}-scheduled`,
+          spec: {
+            intervals: [{ every: "2m" }],
+          },
+        });
+      } catch (error) {
+        console.error(`Error scheduling ${workflowType}`, error);
+        throw error;
+      }
     }
   }
 }
