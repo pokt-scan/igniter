@@ -33,8 +33,6 @@ services:
       - POSTGRES_PWD=postgres
       - POSTGRES_SEEDS=postgres
       - TEMPORAL_CLI_ADDRESS=temporal:7233
-      - SKIP_SCHEMA_SETUP=true
-      - RINGPOP_SEEDS=temporal:7233 # Ensure it's set to the correct hostname and port
     ports:
       - "7233:7233"
     healthcheck:
@@ -54,7 +52,8 @@ services:
   temporal-admin-tools:
     container_name: temporal-admin-tools
     depends_on:
-      - temporal
+      temporal:
+        condition: service_healthy
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CLI_ADDRESS=temporal:7233
@@ -67,7 +66,8 @@ services:
   temporal-ui:
     container_name: temporal-ui
     depends_on:
-      - temporal
+      temporal:
+        condition: service_healthy
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
       - TEMPORAL_CORS_ORIGINS=http://localhost:3000
@@ -84,7 +84,10 @@ services:
       dockerfile: Dockerfile
       target: client-web
       args:
-        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Mac
+#        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Windows or Linux
+        DATABASE_URL: postgres://postgres:postgres@172.17.0.1:5432/igniter?schema=public
     container_name: igniter-web
     environment:
       COIN_MARKET_CAP_API_KEY: d8221f1c-02c2-4016-849f-f3cd842d1e83
@@ -106,7 +109,10 @@ services:
       dockerfile: Dockerfile
       target: client-api
       args:
-        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Mac
+        #        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Windows or Linux
+        DATABASE_URL: postgres://postgres:postgres@172.17.0.1:5432/igniter?schema=public
     container_name: igniter-web-api
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/igniter?schema=public
@@ -125,7 +131,10 @@ services:
       dockerfile: Dockerfile
       target: workflows
       args:
-        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Mac
+        #        DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5432/igniter?schema=public
+        # Use below line for Windows or Linux
+        DATABASE_URL: postgres://postgres:postgres@172.17.0.1:5432/igniter?schema=public
     container_name: igniter-workflows
     environment:
       POKT_RPC_URL: https://rpc.testnet.pokt.network/lb/6d6f727365/
@@ -141,6 +150,5 @@ services:
         condition: service_healthy
       temporal:
         condition: service_healthy
-
 volumes:
   postgres_data:
