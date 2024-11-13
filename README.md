@@ -38,7 +38,13 @@ docker-compose --profile pre-requisites-admin up -d
 
 ### Initializing the PostgreSQL database
 
-Once the pre-requisites are running, you need to install the project dependencies and run push the schema to the database. 
+Once the pre-requisites are running, you need to install the project dependencies and run push the schema to the database.
+
+TODO: Fix issue need to install yarn globally.
+
+```bash
+corepack enable
+```
 
 ```bash
 pnpm install

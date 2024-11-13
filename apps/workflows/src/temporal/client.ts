@@ -1,5 +1,10 @@
 import { Client, Connection } from "@temporalio/client";
-import {TEMPORAL_NAMESPACE, TEMPORAL_TASK_QUEUE, TEMPORAL_URL, TEMPORAL_WORKFLOW_RETENTION} from './constants';
+import {
+  TEMPORAL_NAMESPACE,
+  TEMPORAL_TASK_QUEUE,
+  TEMPORAL_URL,
+  TEMPORAL_WORKFLOW_RETENTION,
+} from "./constants";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -28,7 +33,7 @@ export const getTemporalConfig = () => {
 export const setupTemporalClient = async (): Promise<Client> => {
   if (global.temporal) return global.temporal;
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     checkEnvVariables([
       "TEMPORAL_URL",
       "TEMPORAL_NAMESPACE",
@@ -42,10 +47,14 @@ export const setupTemporalClient = async (): Promise<Client> => {
     address: TEMPORAL_URL,
   });
 
+  console.log(`Connected to Temporal at ${TEMPORAL_URL}`);
+
   const client = new Client({
     connection,
     namespace: TEMPORAL_NAMESPACE,
   });
+
+  console.log(`Temporal Client created`);
 
   global.temporal = client;
 
